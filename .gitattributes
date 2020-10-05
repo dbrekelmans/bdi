@@ -1,0 +1,13 @@
+* text eol=lf
+
+# Binaries
+bdi.phar binary
+bdi.phar.asc binary
+
+# Directories
+/.github export-ignore
+
+# Files
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/composer.lock export-ignore
