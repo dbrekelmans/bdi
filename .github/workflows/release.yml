@@ -1,0 +1,29 @@
+name: Create release
+
+on:
+  repository_dispatch:
+    types: [ release ]
+
+jobs:
+  download-and-commit-release-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download release assets
+        run: |
+          wget -O https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag }}/bdi.phar  bdi.phar
+          wget -O https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag }}/bdi.phar.asc bdi.phar.asc
+      - name: Commit assets
+        uses: EndBug/add-and-commit@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: "Update PHAR distribution to ${{ github.event.client_payload.tag }}"
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.client_payload.tag }}
+          body: ${{ github.event.client_payload.tag }}
+          release_name: ${{ github.event.client_payload.tag }}
+          prerelease: ${{ github.event.client_payload.prerelease }}
