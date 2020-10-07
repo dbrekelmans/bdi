@@ -17,6 +17,7 @@
     ],
     "license": "MIT",
     "bin": [
+        "bdi",
         "bdi.phar"
     ],
     "require": {
