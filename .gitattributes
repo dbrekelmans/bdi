@@ -1,6 +1,7 @@
 * text eol=lf
 
 # Binaries
+bdi binary
 bdi.phar binary
 bdi.phar.asc binary
 
