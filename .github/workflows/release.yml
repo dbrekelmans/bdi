@@ -3,6 +3,7 @@ name: Create release
 on:
   repository_dispatch:
     types: [ release ]
+  workflow_dispatch: null
 
 jobs:
   download-and-commit-release-assets:
