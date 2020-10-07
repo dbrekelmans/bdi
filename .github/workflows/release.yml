@@ -5,7 +5,7 @@ on:
     types: [ release ]
 
 jobs:
-  download-and-commit-release-assets:
+  update-and-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,12 +14,23 @@ jobs:
           node-version: '12'
       - run: node update-composer-json.js ${{ github.event.client_payload.tag_name }}
       - run: composer install --no-interaction
-      - name: Download release assets
-        run: |
-          curl -L https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag_name }}/bdi.phar > bdi.phar
-          curl -L https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag_name }}/bdi.phar.asc > bdi.phar.asc
-          curl -L https://raw.githubusercontent.com/dbrekelmans/browser-driver-installer/${{ github.event.client_payload.tag_name }}/LICENSE > LICENSE
+      - uses: dsaltares/fetch-gh-release-asset@0.0.5
+        with:
+          repo: "dbrekelmans/browser-driver-installer"
+          version: "tags/${{ github.event.client_payload.tag_name }}"
+          file: "bdi.phar"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: dsaltares/fetch-gh-release-asset@0.0.5
+        with:
+          repo: "dbrekelmans/browser-driver-installer"
+          version: "tags/${{ github.event.client_payload.tag_name }}"
+          file: "bdi.phar.asc"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
           cp bdi.phar bdi
+          curl -L https://raw.githubusercontent.com/dbrekelmans/browser-driver-installer/${{ github.event.client_payload.tag_name }}/LICENSE > LICENSE
       - name: Commit assets
         uses: EndBug/add-and-commit@v5
         env:
