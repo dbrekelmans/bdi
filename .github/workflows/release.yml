@@ -25,7 +25,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          message: "Update PHAR distribution to ${{ github.event.client_payload.tag }}"
+          message: "Update PHAR distribution to ${{ github.event.client_payload.tag_name }}"
       - uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
