@@ -16,9 +16,9 @@ jobs:
       - run: composer install --no-interaction
       - name: Download release assets
         run: |
-          curl https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag_name }}/bdi.phar > bdi.phar
-          curl https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag_name }}/bdi.phar.asc > bdi.phar.asc
-          curl https://raw.githubusercontent.com/dbrekelmans/browser-driver-installer/${{ github.event.client_payload.tag_name }}/LICENSE > LICENSE
+          curl -L https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag_name }}/bdi.phar > bdi.phar
+          curl -L https://github.com/dbrekelmans/browser-driver-installer/releases/download/${{ github.event.client_payload.tag_name }}/bdi.phar.asc > bdi.phar.asc
+          curl -L https://raw.githubusercontent.com/dbrekelmans/browser-driver-installer/${{ github.event.client_payload.tag_name }}/LICENSE > LICENSE
           cp bdi.phar bdi
       - name: Commit assets
         uses: EndBug/add-and-commit@v5
