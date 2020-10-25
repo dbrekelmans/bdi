@@ -12,3 +12,4 @@ bdi.phar.asc binary
 /.gitattributes export-ignore
 /.gitignore export-ignore
 /composer.lock export-ignore
+/update-composer-json.js export-ignore
