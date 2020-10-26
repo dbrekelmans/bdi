@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: '12'
       - run: node update-composer-json.js ${{ github.event.client_payload.tag_name }}
-      - run: composer install --no-interaction
+      - run: composer update --no-interaction
       - uses: dsaltares/fetch-gh-release-asset@0.0.5
         with:
           repo: "dbrekelmans/browser-driver-installer"
