@@ -22,7 +22,9 @@
     ],
     "require": {
         "php": "^7.2",
-        "ext-zip": "*"
+        "ext-json": "*",
+        "ext-zip": "*",
+        "ext-zlib": "*"
     },
     "config": {
         "sort-packages": true
