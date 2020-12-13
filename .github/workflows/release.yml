@@ -3,18 +3,6 @@ name: Create release
 on:
   repository_dispatch:
     types: [ release ]
-  workflow_dispatch:
-    inputs:
-      tag_name:
-        description: 'Tag version'
-        required: true
-      release_name:
-        description: 'Release title'
-        required: true
-      prerelease:
-        description: 'This is a prerelease (true or false)'
-        required: true
-        default: 'false'
 
 jobs:
   update-and-release:
