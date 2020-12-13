@@ -3,6 +3,18 @@ name: Create release
 on:
   repository_dispatch:
     types: [ release ]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag version'
+        required: true
+      release_name:
+        description: 'Release title'
+        required: true
+      prerelease:
+        description: 'This is a prerelease (true or false)'
+        required: true
+        default: 'false'
 
 jobs:
   update-and-release:
@@ -32,15 +44,21 @@ jobs:
           cp bdi.phar bdi
           curl -L https://raw.githubusercontent.com/dbrekelmans/browser-driver-installer/${{ github.event.client_payload.tag_name }}/LICENSE > LICENSE
       - name: Commit assets
+        id: commit
         uses: EndBug/add-and-commit@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: "Update PHAR distribution to ${{ github.event.client_payload.tag_name }}"
+      - name: Wait for git push
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '5s' # Wait for git push to be finished
       - uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: success() && steps.commit.outputs.committed && steps.commit.outputs.pushed
         with:
           tag_name: ${{ github.event.client_payload.tag_name }}
           release_name: ${{ github.event.client_payload.release_name }}
           prerelease: ${{ github.event.client_payload.prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
